@@ -1,0 +1,26 @@
+{
+  "name": "cyclic-deep-extend",
+  "version": "1.0.0",
+  "description": "a strict deep-extend that can handle cyclic structures",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node test"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tape": "^4.5.1"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KoryNunn/cyclic-deep-extend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/KoryNunn/cyclic-deep-extend/issues"
+  },
+  "homepage": "https://github.com/KoryNunn/cyclic-deep-extend#readme"
+}
