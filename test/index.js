@@ -125,3 +125,35 @@ test('duplicate values', function (t) {
     t.equal(a.b, 1);
     t.equal(a.c, 2);
 });
+
+test('extend remove cyclic', function (t) {
+    t.plan(1);
+
+    var a = {},
+        b = {},
+        c = {};
+
+    a.a = a;
+    b.a = c;
+
+    extend(a, b);
+
+    t.equal(a.a, c);
+});
+
+test('extend remove cyclic', function (t) {
+    t.plan(2);
+
+    var a = {},
+        b = {},
+        c = {x:1},
+        d = {x:2};
+
+    a.a = c;
+    b.a = d;
+
+    extend(a, b);
+
+    t.equal(a.a, c);
+    t.equal(a.a.x, 2);
+});

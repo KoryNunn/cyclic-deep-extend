@@ -1,6 +1,6 @@
 var isInstance = require('is-instance');
 
-function extend(a, b, visited){
+function extend(a, b, visitedA, visitedB){
     var aType = typeof a;
 
     if(aType !== typeof b){
@@ -18,9 +18,8 @@ function extend(a, b, visited){
     var aKeys = Object.keys(a),
         bKeys = Object.keys(b);
 
-    if(!visited){
-        visited = new WeakSet();
-    }
+    visitedA.add(a);
+    visitedB.add(b);
 
     for(var i = 0; i < bKeys.length; i++){
         var key = bKeys[i];
@@ -30,20 +29,20 @@ function extend(a, b, visited){
             continue;
         }
 
-        if(isInstance(b[key])){
-            if(visited.has(b[key])){
-                return a;
+        if(isInstance(b[key]) && visitedA.has(a[key])){
+            if(visitedB.has(b[key])){
+                continue;
             }
 
-            visited.add(b[key]);
+            a[key] = b[key];
         }
 
-        a[key] = extend(a[key], b[key], visited);
+        a[key] = extend(a[key], b[key], visitedA, visitedB);
     }
 
     return a;
 };
 
 module.exports = function(a, b){
-    return extend(a, b);
+    return extend(a, b, new WeakSet(), new WeakSet());
 }
