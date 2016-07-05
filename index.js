@@ -1,3 +1,5 @@
+var isInstance = require('is-instance');
+
 function extend(a, b, visited){
     var aType = typeof a;
 
@@ -17,7 +19,7 @@ function extend(a, b, visited){
         bKeys = Object.keys(b);
 
     if(!visited){
-        visited = new Set();
+        visited = new WeakSet();
     }
 
     for(var i = 0; i < bKeys.length; i++){
@@ -28,11 +30,13 @@ function extend(a, b, visited){
             continue;
         }
 
-        if(visited.has(b[key])){
-            return b;
-        }
+        if(isInstance(b[key])){
+            if(visited.has(b[key])){
+                return a;
+            }
 
-        visited.add(b[key]);
+            visited.add(b[key]);
+        }
 
         a[key] = extend(a[key], b[key], visited);
     }

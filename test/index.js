@@ -51,7 +51,7 @@ test('extend double cyclic', function (t) {
 });
 
 test('extend double cyclic same key', function (t) {
-    t.plan(1);
+    t.plan(2);
 
     var a = {},
         b = {};
@@ -61,7 +61,23 @@ test('extend double cyclic same key', function (t) {
 
     extend(a, b);
 
-    t.equal(a.b, b);
+    t.equal(a.b, a);
+    t.notEqual(a, b);
+});
+
+test('extend deep cyclic same path', function (t) {
+    t.plan(2);
+
+    var a = {a:{}},
+        b = {a:{}};
+
+    a.a.a = a;
+    b.a.a = b;
+
+    extend(a, b);
+
+    t.equal(a.a.a, a);
+    t.notEqual(a.a.a, b);
 });
 
 test('extend double cyclic nested same key', function (t) {
@@ -77,7 +93,7 @@ test('extend double cyclic nested same key', function (t) {
     extend(a, b);
 
     t.equal(a.a, innerA);
-    t.equal(a.a.b, b);
+    t.equal(a.a.b, a);
 });
 
 test('extend double cyclic nested same key with siblings', function (t) {
@@ -93,6 +109,19 @@ test('extend double cyclic nested same key with siblings', function (t) {
     extend(a, b);
 
     t.equal(a.a, innerA);
-    t.equal(a.a.b, b);
+    t.equal(a.a.b, a);
     t.equal(a.b, 3);
+});
+
+test('duplicate values', function (t) {
+    t.plan(3);
+
+    var a = {},
+        b = {a: 1, b: 1, c: 2};
+
+    extend(a, b);
+
+    t.equal(a.a, 1);
+    t.equal(a.b, 1);
+    t.equal(a.c, 2);
 });
